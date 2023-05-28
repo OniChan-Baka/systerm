@@ -1,46 +1,41 @@
-import tkinter
-import bs4
-import requests
-
-
-def wiki(*args):
-    argList = list(args)
-    search = ""
-    for i in argList:
-        search += i
-    print(search)
-    url = 'https://en.wikipedia.org/w/api.php?action=opensearch&search=' + search + '&format=json'
-    response = requests.get(url)
-    soup = bs4.BeautifulSoup(response.text, 'html.parser')
-    print(soup.prettify())
+import wikipedia
+from datetime import timedelta
 
 
 def main():
-    root = tkinter.Tk()
-    root.geometry("500x100")
-    textarea = tkinter.Text(root, width=50, height=3)  # Set the width and height
-    textarea.pack()
-
-    def on_return(event):
-        args = textarea.get("1.0", tkinter.END)
-        args = args.replace('\n', '')
+    while True:
+        args = input()
         args = args.split(' ')
-        textarea.delete("1.0", tkinter.END)
-        print(args)
         backend(args)
-
-    textarea.bind('<Return>', on_return)
-
-    root.mainloop()
 
 def backend(args):
     print("Arguments received:", args)
     if args[0] != '':
+
+
         if args[0].lower() == 'wiki' or args[0].lower() == 'wikipedia' or args[0].lower() == 'w':
-            print("ok")
-            wiki(args[1::-1])
+            args.pop(0)
+            wiki(args)
+
+
     else:
         print("No arguments received")
+
+def wiki(args):
+    args = " ".join(args)
+    print(args)
+    wikipedia.set_lang('en')
+    wikipedia.set_rate_limiting(True, min_wait=timedelta(milliseconds=1000))
+    print("Getting Info...")
+    try:
+        print(wikipedia.summary(args, sentences=2, auto_suggest=False))
+    except wikipedia.DisambiguationError as e:
+        print(f"There are multiple results for \"{args}\", Here are some suggestions:")
+        ops = '\n'.join(e.options[0::5])
+        print(ops)
+    except wikipedia.exceptions.PageError as e:
+        print("Invalid input, no page found matching the query. please cheack you spellings and try again.")
+
 
 if __name__ == '__main__':
     main()
