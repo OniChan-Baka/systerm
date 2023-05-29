@@ -29,7 +29,7 @@ The script uses an `appPaths.json` file to store the paths of the applications y
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is not licensed.
 
 ---
 
