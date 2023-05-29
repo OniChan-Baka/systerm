@@ -11,13 +11,15 @@ def main():
 def backend(args):
     print("Arguments received:", args)
     if args[0] != '':
-
-
-        if args[0].lower() == 'wiki' or args[0].lower() == 'wikipedia' or args[0].lower() == 'w':
+        if args[0] == 'exit' or args[0].lower() == 'x':
+            print("Exiting...")
+            exit()
+        elif args[0].lower() == 'wiki' or args[0].lower() == 'wikipedia' or args[0].lower() == 'w':
             args.pop(0)
             wiki(args)
-
-
+        elif args[0].lower() == 'open' or args[0].lower() == 'o':
+            args.pop(0)
+            openApp(args)
     else:
         print("No arguments received")
 
@@ -35,6 +37,13 @@ def wiki(args):
         print(ops)
     except wikipedia.exceptions.PageError as e:
         print("Invalid input, no page found matching the query. please cheack you spellings and try again.")
+
+def openApp(args):
+    args = " ".join(args)
+    print(f"Opening {args}")
+    if len(args) > 0:
+        pass
+        
 
 
 if __name__ == '__main__':
