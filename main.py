@@ -1,5 +1,6 @@
 import wikipedia
 from datetime import timedelta
+import requests
 
 
 def main():
@@ -37,13 +38,15 @@ def wiki(args):
         print(ops)
     except wikipedia.exceptions.PageError as e:
         print("Invalid input, no page found matching the query. please cheack you spellings and try again.")
+    except requests.exceptions.ConnectionError as e:
+        print("No insternet connection.")
+
 
 def openApp(args):
     args = " ".join(args)
     print(f"Opening {args}")
     if len(args) > 0:
         pass
-        
 
 
 if __name__ == '__main__':
