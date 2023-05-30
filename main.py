@@ -9,7 +9,7 @@ from subprocess import Popen
 
 
 def main():
-    opera_path = "C:\\Users\\famal\\AppData\\Local\\Programs\\Opera GX\\opera.exe"
+    opera_path = r"C:\\Users\\famal\\AppData\\Local\\Programs\\Opera GX\\opera.exe"
     webbrowser.register('opera', None,webbrowser.BackgroundBrowser(opera_path))
     opera = webbrowser.get('opera')
     with open(r"C:\\Data\\Programming\\Python\\sysTerm\\appPaths.json", "r") as f:
@@ -47,7 +47,7 @@ def backend(args, paths, opera):
         else:
             print("Invalid command.\n")
     else:
-        print("No arguments received\n")
+        print("No arguments received.\n")
 
 def wiki(args):
     args = " ".join(args)
@@ -79,13 +79,15 @@ def openApp(args, paths):
 def matchkey(args, paths):
     appList = paths.keys()
     match, percent = extractOne(args, appList)
-    if percent > 80:
+    if percent >= 80:
         return match
 
 def openWeb(args, opera):
     print("Opening webPgae...\n")
     if args:
         opera.open_new_tab(args)
+    else:
+        print("no arguments recived.\n")
 
 
 if __name__ == '__main__':
