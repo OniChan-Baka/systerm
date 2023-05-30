@@ -6,6 +6,7 @@ from json import load
 from datetime import timedelta
 from fuzzywuzzy.process import extractOne
 from subprocess import Popen
+from os import system
 
 
 def main():
@@ -58,6 +59,13 @@ def backend(args, paths, opera, spotifyInfo):
             args.pop(0)
             playListUrl = "" # TODO: get the playlist url and paste it here
             spotifyUrl(playListUrl, spotifyInfo)
+        elif args[0].lower() == 'restart':
+            print("Restarting...\n")
+            system('python restart.py')
+            exit()
+        elif args[0].lower() == 'clear':
+            system('python clear.py')
+            exit()
 
         else:
             print("Invalid command.\n")
