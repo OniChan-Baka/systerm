@@ -5,6 +5,7 @@ from json import load
 from fuzzywuzzy.process import extractOne
 from subprocess import Popen
 import webbrowser
+import spotipy
 
 
 def main():
