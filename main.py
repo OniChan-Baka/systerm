@@ -18,11 +18,11 @@ def main():
         spotifyInfo = load(f)
     while True:
         args = input('> ')
+        print(' ')
         args = args.split(' ')
         backend(args, appsPaths, opera, spotifyInfo)
 
 def backend(args, paths, opera, spotifyInfo):
-    print("Arguments received:", args)
     if args[0] != '':
         if args[0] == 'exit' or args[0].lower() == 'e':
             print("Exiting...")
@@ -78,7 +78,7 @@ def wiki(args):
 
 def openApp(args, paths):
     args = " ".join(args)
-    print(f"Opening {args}")
+    print(f"Opening {args}\n")
     if len(args) > 0:
         match = matchkey(args, paths)
         if match:
