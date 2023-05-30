@@ -4,20 +4,24 @@ import requests
 from json import load
 from fuzzywuzzy.process import extractOne
 from subprocess import Popen
+import webbrowser
 
 
 def main():
-    with open(r"C:\Data\Programming\Python\sysTerm\appPaths.json", "r") as f:
+    opera_path = "C:\\Users\\famal\\AppData\\Local\\Programs\\Opera GX\\opera.exe"
+    webbrowser.register('opera', None,webbrowser.BackgroundBrowser(opera_path))
+    opera = webbrowser.get('opera')
+    with open(r"C:\\Data\\Programming\\Python\\sysTerm\\appPaths.json", "r") as f:
         appsPaths = load(f)
     while True:
-        args = input()
+        args = input('> ')
         args = args.split(' ')
-        backend(args, appsPaths)
+        backend(args, appsPaths, opera)
 
-def backend(args, paths):
+def backend(args, paths, opera):
     print("Arguments received:", args)
     if args[0] != '':
-        if args[0] == 'exit' or args[0].lower() == 'x':
+        if args[0] == 'exit' or args[0].lower() == 'e':
             print("Exiting...")
             exit()
         elif args[0].lower() == 'wiki' or args[0].lower() == 'wikipedia' or args[0].lower() == 'w':
@@ -26,6 +30,15 @@ def backend(args, paths):
         elif args[0].lower() == 'open' or args[0].lower() == 'o':
             args.pop(0)
             openApp(args, paths)
+        elif args[0].lower() == 'youtube' or args[0].lower() == 'y':
+            args.pop(0)
+            openWeb('https://www.youtube.com', opera)
+        elif args[0].lower() == 'github' or args[0].lower() == 'g':
+            args.pop(0)
+            openWeb('https://github.com', opera)
+        elif args[0].lower() == 'chatgpt' or args[0].lower() == 'chat' or args[0].lower() == 'c':
+            args.pop(0)
+            openWeb('https://chat.openai.com/?model=text-davinci-002-render-sha', opera)
 
         else:
             print("Invalid command.\n")
@@ -64,6 +77,11 @@ def matchkey(args, paths):
     match, percent = extractOne(args, appList)
     if percent > 80:
         return match
+
+def openWeb(args, opera):
+    print("Opening webPgae...\n")
+    if args:
+        opera.open_new_tab(args)
 
 
 if __name__ == '__main__':
