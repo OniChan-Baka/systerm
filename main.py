@@ -1,11 +1,11 @@
 import wikipedia
-from datetime import timedelta
-import requests
-from json import load
-from fuzzywuzzy.process import extractOne
-from subprocess import Popen
 import webbrowser
 import spotipy
+import requests
+from json import load
+from datetime import timedelta
+from fuzzywuzzy.process import extractOne
+from subprocess import Popen
 
 
 def main():
