@@ -39,6 +39,9 @@ def backend(args, paths, opera):
         elif args[0].lower() == 'chatgpt' or args[0].lower() == 'chat' or args[0].lower() == 'c':
             args.pop(0)
             openWeb('https://chat.openai.com/?model=text-davinci-002-render-sha', opera)
+        elif args[0] == 'url' or args[0] == 'u':
+            args.pop(0)
+            openWeb(args[0], opera)
 
         else:
             print("Invalid command.\n")
