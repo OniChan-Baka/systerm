@@ -1,4 +1,3 @@
 /spotify.json,
-/appPaths.json,
-/__pycache__/,
-/tempCodeRunnerFile.py/
+appPaths.json,
+__pycache__/
