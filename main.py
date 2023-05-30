@@ -14,12 +14,14 @@ def main():
     opera = webbrowser.get('opera')
     with open(r"C:\\Data\\Programming\\Python\\sysTerm\\appPaths.json", "r") as f:
         appsPaths = load(f)
+    with open(r"C:\\Data\\Programming\\Python\\sysTerm\\spotify.json", "r") as f:
+        spotifyInfo = load(f)
     while True:
         args = input('> ')
         args = args.split(' ')
-        backend(args, appsPaths, opera)
+        backend(args, appsPaths, opera, spotifyInfo)
 
-def backend(args, paths, opera):
+def backend(args, paths, opera, spotifyInfo):
     print("Arguments received:", args)
     if args[0] != '':
         if args[0] == 'exit' or args[0].lower() == 'e':
@@ -43,6 +45,13 @@ def backend(args, paths, opera):
         elif args[0] == 'url' or args[0] == 'u':
             args.pop(0)
             openWeb(args[0], opera)
+        elif args[0].lower() == 'spotify' or args[0].lower() == 's':
+            args.pop(0)
+            spotifyName(args, spotifyInfo)
+        elif args[0].lower() == 'play' or args[0].lower() == 'p':
+            args.pop(0)
+            playListUrl = "" # TODO: get the playlist url and paste it here
+            spotifyUrl(playListUrl, spotifyInfo)
 
         else:
             print("Invalid command.\n")
@@ -66,6 +75,7 @@ def wiki(args):
     except requests.exceptions.ConnectionError as e:
         print("No insternet connection.\n")
 
+
 def openApp(args, paths):
     args = " ".join(args)
     print(f"Opening {args}")
@@ -88,6 +98,12 @@ def openWeb(args, opera):
         opera.open_new_tab(args)
     else:
         print("no arguments recived.\n")
+
+def spotifyName(args, spotifyInfo): # TODO: get the name of the sond and play it
+    pass
+
+def spotifyUrl(args, spotifyInfo): # TODO: get the url of the sond and play it
+    pass
 
 
 if __name__ == '__main__':
