@@ -59,11 +59,11 @@ def backend(args, paths, opera, spotifyInfo):
             args.pop(0)
             playListUrl = "" # TODO: get the playlist url and paste it here
             spotifyUrl(playListUrl, spotifyInfo)
-        elif args[0].lower() == 'restart':
+        elif args[0].lower() == 'restart' or args[0].lower() == 'r':
             print("Restarting...\n")
             system('python restart.py')
             exit()
-        elif args[0].lower() == 'clear':
+        elif args[0].lower() == 'clear' or args[0].lower() == 'cls':
             system('python clear.py')
             exit()
 
