@@ -1,7 +1,19 @@
 from os import system
+from os import getcwd
+from os import chdir
 
-
-system("cls")
-system("clear")
-system("python ./main.py")
+Directory = getcwd()
+Directory = Directory.split('\\')
+Directory = Directory[-1]
+if Directory != 'sysTerm':
+    chdir('sysTerm')
+    system("cls")
+    system("clear")
+    system("python ./main.py")
+elif Directory == 'sysTerm':
+    system("cls")
+    system("clear")
+    system("python ./main.py")
+else:
+    print("Error: please check you directory")
 exit()

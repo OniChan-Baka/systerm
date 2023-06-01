@@ -1,12 +1,12 @@
 import wikipedia
 import webbrowser
-import spotipy
 import requests
 from json import load
 from datetime import timedelta
 from fuzzywuzzy.process import extractOne
 from subprocess import Popen
 from os import system
+
 
 
 def main():
@@ -17,13 +17,14 @@ def main():
         appsPaths = load(f)
     with open(r"C:\\Data\\Programming\\Python\\sysTerm\\spotify.json", "r") as f:
         spotifyInfo = load(f)
+    playListUrl = "https://open.spotify.com/playlist/4PPFMow4DCYoIFTrOrBEB3?si=87803a5faa7a4848"
     while True:
         args = input('> ')
         print(' ')
         args = args.split(' ')
-        backend(args, appsPaths, opera, spotifyInfo)
+        backend(args, appsPaths, opera, spotifyInfo, playListUrl)
 
-def backend(args, paths, opera, spotifyInfo):
+def backend(args, paths, opera, spotifyInfo, playListUrl):
     if args[0] != '':
         if args[0] == 'exit' or args[0].lower() == 'e':
             print("Exiting...")
@@ -52,13 +53,12 @@ def backend(args, paths, opera, spotifyInfo):
         elif args[0] == 'url' or args[0] == 'u':
             args.pop(0)
             openWeb(args[0], opera)
-        elif args[0].lower() == 'spotify' or args[0].lower() == 's':
+        elif args[0].lower() == 'play' or args[0].lower() == 'p': # TODO: after writing the funtions add the funtions here.
             args.pop(0)
-            spotifyName(args, spotifyInfo)
-        elif args[0].lower() == 'play' or args[0].lower() == 'p':
+            play()
+        elif args[0].lower() == 'next' or args[0].lower() == '>': # TODO: after writing the funtions add the funtions here.
             args.pop(0)
-            playListUrl = "" # TODO: get the playlist url and paste it here
-            spotifyUrl(playListUrl, spotifyInfo)
+            nextSong()
         elif args[0].lower() == 'restart' or args[0].lower() == 'r':
             print("Restarting...\n")
             system('python restart.py')
@@ -113,10 +113,10 @@ def openWeb(args, opera):
     else:
         print("no arguments recived.\n")
 
-def spotifyName(args, spotifyInfo): # TODO: get the name of the sond and play it
+def play(): #TODO: after downloading the playlist finish the funtion to play the songs.
     pass
 
-def spotifyUrl(args, spotifyInfo): # TODO: get the url of the sond and play it
+def nextSong(): #TODO: after te play funtion add a funtion to go to the next sond and the previous song.
     pass
 
 
