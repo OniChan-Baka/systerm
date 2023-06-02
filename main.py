@@ -102,7 +102,7 @@ def openApp(args, paths):
 
 def matchkey(args, paths):
     appList = paths.keys()
-    match, percent = extractOne(args, appList)
+    match, percent = extractOne(args, appList) # type: ignore
     if percent >= 80:
         return match
 
