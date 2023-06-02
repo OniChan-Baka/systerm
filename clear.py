@@ -5,12 +5,12 @@ from os import chdir
 Directory = getcwd()
 Directory = Directory.split('\\')
 Directory = Directory[-1]
-if Directory != 'sysTerm':
-    chdir('sysTerm')
+if Directory != 'systerm':
+    chdir('systerm')
     system("cls")
     system("clear")
     system("python ./main.py")
-elif Directory == 'sysTerm':
+elif Directory == 'systerm':
     system("cls")
     system("clear")
     system("python ./main.py")
