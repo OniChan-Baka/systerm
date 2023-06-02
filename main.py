@@ -8,7 +8,6 @@ from subprocess import Popen
 from os import system
 
 
-
 def main():
     opera_path = r"C:\\Users\\famal\\AppData\\Local\\Programs\\Opera GX\\opera.exe"
     webbrowser.register('opera', None,webbrowser.BackgroundBrowser(opera_path))
