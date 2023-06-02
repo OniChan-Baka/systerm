@@ -6,7 +6,7 @@ Directory = getcwd()
 Directory = Directory.split('\\')
 Directory = Directory[-1]
 if Directory != 'systerm':
-    chdir('sysTerm')
+    chdir('systerm')
     system("python ./main.py")
 elif Directory == 'systerm':
     system("python ./main.py")

@@ -5,25 +5,30 @@ from json import load
 from datetime import timedelta
 from fuzzywuzzy.process import extractOne
 from subprocess import Popen
-from os import system
+import os
+from pygame import mixer
 
 
 def main():
+    Directory = os.getcwd()
+    Directory = Directory.split('\\')
+    Directory = Directory[-1]
+    if Directory != 'systerm':
+        os.chdir('systerm')
+    mixer.init()
+    songsDir = "songs"
     opera_path = r"C:\\Users\\famal\\AppData\\Local\\Programs\\Opera GX\\opera.exe"
     webbrowser.register('opera', None,webbrowser.BackgroundBrowser(opera_path))
     opera = webbrowser.get('opera')
     with open(r"C:\\Data\\Programming\\Python\\sysTerm\\appPaths.json", "r") as f:
         appsPaths = load(f)
-    with open(r"C:\\Data\\Programming\\Python\\sysTerm\\spotify.json", "r") as f:
-        spotifyInfo = load(f)
-    playListUrl = "https://open.spotify.com/playlist/4PPFMow4DCYoIFTrOrBEB3?si=87803a5faa7a4848"
     while True:
         args = input('> ')
         print(' ')
         args = args.split(' ')
-        backend(args, appsPaths, opera, spotifyInfo, playListUrl)
+        backend(args, appsPaths, opera, songsDir) # type: ignore
 
-def backend(args, paths, opera, spotifyInfo, playListUrl):
+def backend(args, paths, opera, songsDir):
     if args[0] != '':
         if args[0] == 'exit' or args[0].lower() == 'e':
             print("Exiting...")
@@ -54,16 +59,25 @@ def backend(args, paths, opera, spotifyInfo, playListUrl):
             openWeb(args[0], opera)
         elif args[0].lower() == 'play' or args[0].lower() == 'p': # TODO: after writing the funtions add the funtions here.
             args.pop(0)
-            play()
+            play(args, songsDir)
         elif args[0].lower() == 'next' or args[0].lower() == '>': # TODO: after writing the funtions add the funtions here.
             args.pop(0)
             nextSong()
         elif args[0].lower() == 'restart' or args[0].lower() == 'r':
             print("Restarting...\n")
-            system('python restart.py')
+            Directory = os.getcwd()
+            Directory = Directory.split('\\')
+            Directory = Directory[-1]
+            if Directory != 'systerm':
+                os.chdir('systerm')
+                os.system("python ./main.py")
+            elif Directory == 'systerm':
+                os.system("python ./main.py")
+            else:
+                print("Error: please check you directory")
             exit()
         elif args[0].lower() == 'clear' or args[0].lower() == 'cls':
-            system('python clear.py')
+            os.system('python clear.py')
             exit()
 
         else:
@@ -112,8 +126,18 @@ def openWeb(args, opera):
     else:
         print("no arguments recived.\n")
 
-def play(): #TODO: after downloading the playlist finish the funtion to play the songs.
-    pass
+def play(args, songsDir): #TODO: after downloading the playlist finish the funtion to play the songs.
+    args = " ".join(args)
+    print(f"Playing {args}\n")
+    if len(args) > 0:
+        match, _ = extractOne(args, os.listdir(songsDir)) # type: ignore
+        if match:
+            mixer.music.load(songsDir[match])
+            mixer.music.play()
+        else:
+            mixer.
+    else:
+        print("no arguments recived.\n")
 
 def nextSong(): #TODO: after te play funtion add a funtion to go to the next sond and the previous song.
     pass
