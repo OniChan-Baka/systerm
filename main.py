@@ -135,7 +135,7 @@ def play(args, songsDir): #TODO: after downloading the playlist finish the funti
             mixer.music.load(songsDir[match])
             mixer.music.play()
         else:
-            mixer.
+            pass
     else:
         print("no arguments recived.\n")
 
