@@ -1,3 +1,5 @@
 wikipedia
 fuzzywuzzy
 requests
+pygame
+json
