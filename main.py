@@ -9,14 +9,16 @@ import os
 from pygame import mixer
 
 
-def main():
+def main(songsNum):
     Directory = os.getcwd()
     Directory = Directory.split('\\')
     Directory = Directory[-1]
     if Directory != 'systerm':
         os.chdir('systerm')
     mixer.init()
-    songsDir = "songs"
+    songsDir = "Songs"
+    songsList = os.listdir(songsDir)
+    songsList.sort()
     opera_path = r"C:\\Users\\famal\\AppData\\Local\\Programs\\Opera GX\\opera.exe"
     webbrowser.register('opera', None,webbrowser.BackgroundBrowser(opera_path))
     opera = webbrowser.get('opera')
@@ -26,9 +28,9 @@ def main():
         args = input('> ')
         print(' ')
         args = args.split(' ')
-        backend(args, appsPaths, opera, songsDir) # type: ignore
+        backend(args, appsPaths, opera, songsDir, songsList, songNum) # type: ignore
 
-def backend(args, paths, opera, songsDir):
+def backend(args, paths, opera, songsDir, songsList, songNum):
     if args[0] != '':
         if args[0] == 'exit' or args[0].lower() == 'e':
             print("Exiting...")
@@ -57,12 +59,12 @@ def backend(args, paths, opera, songsDir):
         elif args[0] == 'url' or args[0] == 'u':
             args.pop(0)
             openWeb(args[0], opera)
-        elif args[0].lower() == 'play' or args[0].lower() == 'p': # TODO: after writing the funtions add the funtions here.
+        elif args[0].lower() == 'play' or args[0].lower() == 'p':
             args.pop(0)
-            play(args, songsDir)
+            play(args, songsDir, songsList, songNum)
         elif args[0].lower() == 'next' or args[0].lower() == '>': # TODO: after writing the funtions add the funtions here.
             args.pop(0)
-            nextSong()
+            nextSong(args, songsDir, songsList, songNum)
         elif args[0].lower() == 'restart' or args[0].lower() == 'r':
             print("Restarting...\n")
             Directory = os.getcwd()
@@ -87,7 +89,6 @@ def backend(args, paths, opera, songsDir):
 
 def wiki(args):
     args = " ".join(args)
-    print(args)
     wikipedia.set_lang('en')
     wikipedia.set_rate_limiting(True, min_wait=timedelta(milliseconds=1000))
     print("Getting Info...")
@@ -126,22 +127,29 @@ def openWeb(args, opera):
     else:
         print("no arguments recived.\n")
 
-def play(args, songsDir): #TODO: after downloading the playlist finish the funtion to play the songs.
+def play(args, songsDir, songsList, songNum): #TODO: after downloading the playlist finish the funtion to play the songs.
     args = " ".join(args)
+    songNum += 1
     print(f"Playing {args}\n")
     if len(args) > 0:
-        match, _ = extractOne(args, os.listdir(songsDir)) # type: ignore
+        match, _ = extractOne(args, songsList) # type: ignore
         if match:
-            mixer.music.load(songsDir[match])
+            mixer.music.load(f"{songsDir}\\{match}")
             mixer.music.play()
         else:
-            pass
+            print("Wrong argument!")
     else:
-        print("no arguments recived.\n")
+        print(f"{songsDir}\\{songsList[songNum]}")
+        mixer.music.load(f"{songsDir}\\{songsList[songNum]}")
+        mixer.music.play()
 
-def nextSong(): #TODO: after te play funtion add a funtion to go to the next sond and the previous song.
+def nextSong(args, songsDir, songsList, songNum): #TODO: add a next song function
+    songNum += 1
+    play(args, songsDir, songsList, songNum)
+
+def stopSong(): #TODO: add a stop song function
     pass
 
-
 if __name__ == '__main__':
-    main()
+    songNum = 0
+    main(songNum)
