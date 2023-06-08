@@ -65,22 +65,22 @@ def backend(args, paths, opera, songsDir, songsList, songNum):
         elif args[0].lower() == 'next' or args[0].lower() == '>': # TODO: after writing the funtions add the funtions here.
             args.pop(0)
             nextSong(args, songsDir, songsList, songNum)
+        elif args[0].lower() == 'previous' or args[0].lower() == '<':
+            args.pop(0)
+            previousSong()
+        elif args[0].lower() == 'pause' or args[0].lower() == ' ':
+            args.pop(0)
+            pauseSong()
+        elif args[0].lower() == 'resume' or args[0].lower() == 'r':
+            args.pop(0)
+            resumeSong()
+        elif args[0].lower() == 'stop':
+            args.pop(0)
+            stopSong()
         elif args[0].lower() == 'restart' or args[0].lower() == 'r':
-            print("Restarting...\n")
-            Directory = os.getcwd()
-            Directory = Directory.split('\\')
-            Directory = Directory[-1]
-            if Directory != 'systerm':
-                os.chdir('systerm')
-                os.system("python ./main.py")
-            elif Directory == 'systerm':
-                os.system("python ./main.py")
-            else:
-                print("Error: please check you directory")
-            exit()
+            restart()
         elif args[0].lower() == 'clear' or args[0].lower() == 'cls':
-            os.system('python clear.py')
-            exit()
+            clear()
 
         else:
             print("Invalid command.\n")
@@ -147,8 +147,46 @@ def nextSong(args, songsDir, songsList, songNum): #TODO: add a next song functio
     songNum += 1
     play(args, songsDir, songsList, songNum)
 
-def stopSong(): #TODO: add a stop song function
+def previousSong():
     pass
+
+def pauseSong():
+    mixer.music.pause()
+
+def resumeSong():
+    mixer.music.unpause()
+
+def stopSong():
+    mixer.music.stop()
+
+def restart():
+    print("Restarting...\n")
+    Directory = os.getcwd()
+    Directory = Directory.split('\\')
+    Directory = Directory[-1]
+    if Directory != 'systerm':
+        os.chdir('systerm')
+        os.system("python ./main.py")
+    elif Directory == 'systerm':
+        os.system("python ./main.py")
+    else:
+        print("Error: please check you directory")
+    exit()
+
+def clear():
+    print("Restarting...\n")
+    Directory = os.getcwd()
+    Directory = Directory.split('\\')
+    Directory = Directory[-1]
+    if Directory != 'systerm':
+        os.chdir('systerm')
+        os.system('python clear.py')
+    elif Directory == 'systerm':
+        os.system('python clear.py')
+    else:
+        print("Error: please check you directory")
+    exit()
+
 
 if __name__ == '__main__':
     songNum = 0
