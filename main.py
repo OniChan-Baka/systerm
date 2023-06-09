@@ -6,17 +6,16 @@ from datetime import timedelta
 from fuzzywuzzy.process import extractOne
 from subprocess import Popen
 import os
-from pygame import mixer
 
 
-def main(songsNum):
+def main():
     Directory = os.getcwd()
     Directory = Directory.split('\\')
     Directory = Directory[-1]
     if Directory != 'systerm':
         os.chdir('systerm')
-    mixer.init()
     songsDir = "Songs"
+    songNum = 0
     songsList = os.listdir(songsDir)
     songsList.sort()
     opera_path = r"C:\\Users\\famal\\AppData\\Local\\Programs\\Opera GX\\opera.exe"
@@ -28,7 +27,7 @@ def main(songsNum):
         args = input('> ')
         print(' ')
         args = args.split(' ')
-        backend(args, appsPaths, opera, songsDir, songsList, songNum) # type: ignore
+        backend(args, appsPaths, opera, songsDir, songsList, songNum)
 
 def backend(args, paths, opera, songsDir, songsList, songNum):
     if args[0] != '':
@@ -62,16 +61,16 @@ def backend(args, paths, opera, songsDir, songsList, songNum):
         elif args[0].lower() == 'play' or args[0].lower() == 'p':
             args.pop(0)
             play(args, songsDir, songsList, songNum)
-        elif args[0].lower() == 'next' or args[0].lower() == '>': # TODO: after writing the funtions add the funtions here.
+        elif args[0].lower() == 'next' or args[0].lower() == '>':
             args.pop(0)
             nextSong(args, songsDir, songsList, songNum)
-        elif args[0].lower() == 'previous' or args[0].lower() == '<':
+        elif args[0].lower() == 'previous' or args[0].lower() == '<': # TODO: finish the previous funtion
             args.pop(0)
             previousSong()
-        elif args[0].lower() == 'pause' or args[0].lower() == ' ':
+        elif args[0].lower() == 'pause' or args[0].lower() == 'pus':
             args.pop(0)
             pauseSong()
-        elif args[0].lower() == 'resume' or args[0].lower() == 'r':
+        elif args[0].lower() == 'resume' or args[0].lower() == 'res':
             args.pop(0)
             resumeSong()
         elif args[0].lower() == 'stop':
@@ -129,35 +128,31 @@ def openWeb(args, opera):
 
 def play(args, songsDir, songsList, songNum): #TODO: after downloading the playlist finish the funtion to play the songs.
     args = " ".join(args)
-    songNum += 1
     print(f"Playing {args}\n")
     if len(args) > 0:
         match, _ = extractOne(args, songsList) # type: ignore
         if match:
-            mixer.music.load(f"{songsDir}\\{match}")
-            mixer.music.play()
+            pass
         else:
             print("Wrong argument!")
     else:
         print(f"{songsDir}\\{songsList[songNum]}")
-        mixer.music.load(f"{songsDir}\\{songsList[songNum]}")
-        mixer.music.play()
+        return songNum
 
 def nextSong(args, songsDir, songsList, songNum): #TODO: add a next song function
-    songNum += 1
-    play(args, songsDir, songsList, songNum)
+    pass
 
 def previousSong():
     pass
 
 def pauseSong():
-    mixer.music.pause()
+    pass
 
 def resumeSong():
-    mixer.music.unpause()
+    pass
 
 def stopSong():
-    mixer.music.stop()
+    pass
 
 def restart():
     print("Restarting...\n")
@@ -166,15 +161,14 @@ def restart():
     Directory = Directory[-1]
     if Directory != 'systerm':
         os.chdir('systerm')
-        os.system("python ./main.py")
+        os.system("python ./restart.py")
     elif Directory == 'systerm':
-        os.system("python ./main.py")
+        os.system("python ./restart.py")
     else:
         print("Error: please check you directory")
     exit()
 
 def clear():
-    print("Restarting...\n")
     Directory = os.getcwd()
     Directory = Directory.split('\\')
     Directory = Directory[-1]
@@ -189,5 +183,4 @@ def clear():
 
 
 if __name__ == '__main__':
-    songNum = 0
-    main(songNum)
+    main()
