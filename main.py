@@ -6,6 +6,7 @@ from datetime import timedelta
 from fuzzywuzzy.process import extractOne
 from subprocess import Popen
 import os
+from pygame import mixer
 
 
 def main():
@@ -14,6 +15,7 @@ def main():
     Directory = Directory[-1]
     if Directory != 'systerm':
         os.chdir('systerm')
+    mixer.init()
     songsDir = "Songs"
     songNum = 0
     songsList = os.listdir(songsDir)
@@ -33,6 +35,7 @@ def backend(args, paths, opera, songsDir, songsList, songNum):
     if args[0] != '':
         if args[0] == 'exit' or args[0].lower() == 'e':
             print("Exiting...")
+            mixer.quit()
             exit()
         elif args[0].lower() == 'wiki' or args[0].lower() == 'wikipedia' or args[0].lower() == 'w':
             args.pop(0)
@@ -132,27 +135,33 @@ def play(args, songsDir, songsList, songNum): #TODO: after downloading the playl
     if len(args) > 0:
         match, _ = extractOne(args, songsList) # type: ignore
         if match:
-            pass
+            mixer.music.load(f"{songsDir}\\{match}")
+            mixer.music.play()
+            return songNum
         else:
             print("Wrong argument!")
     else:
         print(f"{songsDir}\\{songsList[songNum]}")
+        mixer.music.load(f"{songsDir}\\{songsList[songNum]}")
+        mixer.music.play()
         return songNum
 
 def nextSong(args, songsDir, songsList, songNum): #TODO: add a next song function
-    pass
+    songNum += 1
+    play(args, songsDir, songsList, songNum)
+    
 
 def previousSong():
     pass
 
 def pauseSong():
-    pass
+    mixer.music.pause()
 
 def resumeSong():
-    pass
+    mixer.music.unpause()
 
 def stopSong():
-    pass
+    mixer.music.stop()
 
 def restart():
     print("Restarting...\n")
@@ -160,9 +169,11 @@ def restart():
     Directory = Directory.split('\\')
     Directory = Directory[-1]
     if Directory != 'systerm':
+        mixer.quit()
         os.chdir('systerm')
         os.system("python ./restart.py")
     elif Directory == 'systerm':
+        mixer.quit()
         os.system("python ./restart.py")
     else:
         print("Error: please check you directory")
