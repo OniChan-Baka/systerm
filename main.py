@@ -7,6 +7,8 @@ from fuzzywuzzy.process import extractOne
 from subprocess import Popen
 import os
 from pygame import mixer
+import pygame.mixer_music as mixer_music
+import pygame.constants as constants
 
 
 def main():
@@ -21,7 +23,7 @@ def main():
     songsList = os.listdir(songsDir)
     songsList.sort()
     opera_path = r"C:\\Users\\famal\\AppData\\Local\\Programs\\Opera GX\\opera.exe"
-    webbrowser.register('opera', None,webbrowser.BackgroundBrowser(opera_path))
+    webbrowser.register('opera', None, webbrowser.BackgroundBrowser(opera_path))
     opera = webbrowser.get('opera')
     with open(r"C:\\Data\\Programming\\Python\\sysTerm\\appPaths.json", "r") as f:
         appsPaths = load(f)
@@ -63,13 +65,16 @@ def backend(args, paths, opera, songsDir, songsList, songNum):
             openWeb(args[0], opera)
         elif args[0].lower() == 'play' or args[0].lower() == 'p':
             args.pop(0)
-            play(args, songsDir, songsList, songNum)
+            songNum = play(args, songsDir, songsList, songNum)
+            mixer_music.set_endevent(constants.USEREVENT)
         elif args[0].lower() == 'next' or args[0].lower() == '>':
             args.pop(0)
-            nextSong(args, songsDir, songsList, songNum)
-        elif args[0].lower() == 'previous' or args[0].lower() == '<': # TODO: finish the previous funtion
+            songNum = nextSong(args, songsDir, songsList, songNum)
+            mixer_music.set_endevent(constants.USEREVENT)
+        elif args[0].lower() == 'previous' or args[0].lower() == '<':
             args.pop(0)
-            previousSong()
+            songNum = previousSong(args, songsDir, songsList, songNum)
+            mixer_music.set_endevent(constants.USEREVENT)
         elif args[0].lower() == 'pause' or args[0].lower() == 'pus':
             args.pop(0)
             pauseSong()
@@ -101,9 +106,9 @@ def wiki(args):
         ops = '\n'.join(e.options[0::5])
         print(ops)
     except wikipedia.exceptions.PageError as e:
-        print("Invalid input, no page found matching the query. please cheack you spellings and try again.\n")
+        print("Invalid input, no page found matching the query. please check your spellings and try again.\n")
     except requests.exceptions.ConnectionError as e:
-        print("No insternet connection.\n")
+        print("No internet connection.\n")
 
 
 def openApp(args, paths):
@@ -123,45 +128,51 @@ def matchkey(args, paths):
         return match
 
 def openWeb(args, opera):
-    print("Opening webPgae...\n")
+    print("Opening web page...\n")
     if args:
         opera.open_new_tab(args)
     else:
-        print("no arguments recived.\n")
+        print("No arguments received.\n")
 
-def play(args, songsDir, songsList, songNum): #TODO: after downloading the playlist finish the funtion to play the songs.
+def play(args, songsDir, songsList, songNum):
     args = " ".join(args)
     print(f"Playing {args}\n")
     if len(args) > 0:
         match, _ = extractOne(args, songsList) # type: ignore
         if match:
-            mixer.music.load(f"{songsDir}\\{match}")
-            mixer.music.play()
+            mixer_music.load(f"{songsDir}/{match}")
+            mixer_music.play()
             return songNum
         else:
             print("Wrong argument!")
     else:
-        print(f"{songsDir}\\{songsList[songNum]}")
-        mixer.music.load(f"{songsDir}\\{songsList[songNum]}")
-        mixer.music.play()
+        print(f"{songsDir}/{songsList[songNum]}")
+        mixer_music.load(f"{songsDir}/{songsList[songNum]}")
+        mixer_music.play()
         return songNum
 
-def nextSong(args, songsDir, songsList, songNum): #TODO: add a next song function
+def nextSong(args, songsDir, songsList, songNum):
     songNum += 1
+    if songNum >= len(songsList):
+        songNum = 0
     play(args, songsDir, songsList, songNum)
-    
+    return songNum
 
-def previousSong():
-    pass
+def previousSong(args, songsDir, songsList, songNum):
+    songNum -= 1
+    if songNum < 0:
+        songNum = len(songsList) - 1
+    play(args, songsDir, songsList, songNum)
+    return songNum
 
 def pauseSong():
-    mixer.music.pause()
+    mixer_music.pause()
 
 def resumeSong():
-    mixer.music.unpause()
+    mixer_music.unpause()
 
 def stopSong():
-    mixer.music.stop()
+    mixer_music.stop()
 
 def restart():
     print("Restarting...\n")
@@ -176,7 +187,7 @@ def restart():
         mixer.quit()
         os.system("python ./restart.py")
     else:
-        print("Error: please check you directory")
+        print("Error: please check your directory")
     exit()
 
 def clear():
@@ -189,7 +200,7 @@ def clear():
     elif Directory == 'systerm':
         os.system('python clear.py')
     else:
-        print("Error: please check you directory")
+        print("Error: please check your directory")
     exit()
 
 
