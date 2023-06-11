@@ -2,11 +2,8 @@ import os
 import requests
 import wikipedia
 import webbrowser
-import pygame.constants as constants
-import pygame.mixer_music as mixer_music
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = 'i'
 from json import load
-from json import dump
 from pygame import mixer
 from subprocess import Popen
 from datetime import timedelta
@@ -19,10 +16,6 @@ def main():
     Directory = Directory[-1]
     if Directory != 'systerm':
         os.chdir('systerm')
-    mixer.init()
-    songsDir = "Songs"
-    songsList = os.listdir(songsDir)
-    songsList.sort()
     opera_path = r"C:\\Users\\famal\\AppData\\Local\\Programs\\Opera GX\\opera.exe"
     webbrowser.register('opera', None, webbrowser.BackgroundBrowser(opera_path))
     opera = webbrowser.get('opera')
@@ -32,14 +25,12 @@ def main():
         args = input('> ')
         print(' ')
         args = args.split(' ')
-        backend(args, appsPaths, opera, songsDir, songsList)
+        backend(args, appsPaths, opera)
 
-def backend(args, paths, opera, songsDir, songsList):
-    if args[0] != '':
-        if args[0] == 'exit' or args[0].lower() == 'e':
-            print("Exiting...")
-            mixer.quit()
-            exit()
+def backend(args, paths, opera):
+    if args:
+        if None:
+            pass
         elif args[0].lower() == 'wiki' or args[0].lower() == 'wikipedia' or args[0].lower() == 'w':
             args.pop(0)
             wiki(args)
@@ -64,33 +55,14 @@ def backend(args, paths, opera, songsDir, songsList):
         elif args[0] == 'url' or args[0] == 'u':
             args.pop(0)
             openWeb(args[0], opera)
-        elif args[0].lower() == 'play' or args[0].lower() == 'p':
-            args.pop(0)
-            with open(r"C:\Data\Programming\Python\systerm\songNum.json", "r") as songNum:
-                songNum = load(songNum)
-            songNum = play(args, songsDir, songsList, songNum["songNum"])
-            mixer_music.set_endevent(constants.USEREVENT)
-        elif args[0].lower() == 'next' or args[0].lower() == 'ne' or args[0].lower() == '>':
-            args.pop(0)
-            songNum = nextSong(args, songsDir, songsList)
-            mixer_music.set_endevent(constants.USEREVENT)
-        elif args[0].lower() == 'previous' or args[0].lower() == "pre" or args[0].lower() == '<':
-            args.pop(0)
-            songNum = previousSong(args, songsDir, songsList)
-            mixer_music.set_endevent(constants.USEREVENT)
-        elif args[0].lower() == 'pause' or args[0].lower() == 'pus':
-            args.pop(0)
-            pauseSong()
-        elif args[0].lower() == 'resume' or args[0].lower() == 'res':
-            args.pop(0)
-            resumeSong()
-        elif args[0].lower() == 'stop' or args[0].lower() == 'st':
-            args.pop(0)
-            stopSong()
         elif args[0].lower() == 'restart' or args[0].lower() == 'r':
             restart()
         elif args[0].lower() == 'clear' or args[0].lower() == 'cls':
             clear()
+        elif args[0] == 'exit' or args[0].lower() == 'e':
+            print("Exiting...")
+            mixer.quit()
+            exit()
 
         else:
             print("Invalid command.\n")
@@ -136,60 +108,6 @@ def openWeb(args, opera):
         opera.open_new_tab(args)
     else:
         print("No arguments received.\n")
-
-def play(args, songsDir, songsList, songNum):
-    args = " ".join(args)
-    if len(args) > 0:
-        match, _ = extractOne(args, songsList) # type: ignore
-        if match:
-            print(f"Playing {match}\n")
-            mixer_music.load(f"{songsDir}/{match}")
-            mixer_music.play()
-        else:
-            print("Wrong argument!\n")
-    else:
-        print(f"{songsDir}/{songsList[songNum]}\n")
-        mixer_music.load(f"{songsDir}/{songsList[songNum]}")
-        mixer_music.play()
-
-def nextSong(args, songsDir, songsList):
-    with open(r"C:\Data\Programming\Python\systerm\songNum.json", "r") as songNumFile:
-        songNumData = load(songNumFile)
-    songNum = songNumData['songNum']
-    songNum += 1
-    play(args, songsDir, songsList, songNum)
-    songNumData['songNum'] = songNum
-    with open(r"C:\Data\Programming\Python\systerm\songNum.json", "w") as songNumFile:
-        dump(songNumData, songNumFile)
-
-
-
-def previousSong(args, songsDir, songsList):
-    with open(r"C:\Data\Programming\Python\systerm\songNum.json", "r") as songNumFile:
-        songNumData = load(songNumFile)
-    songNum = songNumData['songNum']
-    songNum -= 1
-    play(args, songsDir, songsList, songNum)
-    songNumData['songNum'] = songNum
-    with open(r"C:\Data\Programming\Python\systerm\songNum.json", "w") as songNumFile:
-        dump(songNumData, songNumFile)
-
-def pauseSong():
-    mixer_music.pause()
-
-def resumeSong():
-    mixer_music.unpause()
-
-def stopSong():
-    with open(r"C:\Data\Programming\Python\systerm\songNum.json", "r") as songNumFile:
-        songNumData = load(songNumFile)
-    songNum = songNumData['songNum']
-    songNum = 0
-    songNumData['songNum'] = songNum
-    with open(r"C:\Data\Programming\Python\systerm\songNum.json", "w") as songNumFile:
-        dump(songNumData, songNumFile)
-    mixer_music.stop()
-    print("Music stopped\n")
 
 def restart():
     print("Restarting...\n")
