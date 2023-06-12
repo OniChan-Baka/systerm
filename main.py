@@ -1,9 +1,9 @@
-os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = 'i'
 import os
 import requests
 import wikipedia
 import webbrowser
 from json import load
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = 'i'
 from pygame import mixer
 from subprocess import Popen
 from datetime import timedelta
