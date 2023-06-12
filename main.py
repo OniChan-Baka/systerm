@@ -1,8 +1,8 @@
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = 'i'
 import os
 import requests
 import wikipedia
 import webbrowser
-os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = 'i'
 from json import load
 from pygame import mixer
 from subprocess import Popen
