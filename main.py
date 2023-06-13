@@ -2,6 +2,7 @@ import os
 import requests
 import wikipedia
 import webbrowser
+import psutil
 from json import load
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = 'i'
 from pygame import mixer
@@ -63,6 +64,8 @@ def backend(args, paths, opera):
             print("Exiting...")
             mixer.quit()
             exit()
+        elif args[0] == 'code' or args[0].lower() == 'c':
+            code(paths)
 
         else:
             print("Invalid command.\n")
@@ -109,6 +112,19 @@ def openWeb(args, opera):
     else:
         print("No arguments received.\n")
 
+def code(paths):
+    if paths and 'vscode' in paths.keys():
+        print("ok")
+        for p in psutil.process_iter():
+            print(p.name)
+            if p.name == 'Code':
+                pass
+        # Popen(paths['vscode'])
+    if paths and 'spotify' in paths.keys():
+        # Popen(paths['spotify'])
+        pass
+
+
 def restart():
     print("Restarting...\n")
     Directory = os.getcwd()
@@ -123,7 +139,6 @@ def restart():
         os.system("python ./restart.py")
     else:
         print("Error: please check your directory")
-    exit()
 
 def clear():
     Directory = os.getcwd()
@@ -131,12 +146,27 @@ def clear():
     Directory = Directory[-1]
     if Directory != 'systerm':
         os.chdir('systerm')
-        os.system('python clear.py')
+        if os.name == 'posix':
+            if 'TERM' in os.environ and os.environ['TERM'] == 'xterm-256color':
+                os.system('clear')
+            else:
+                os.system('clear')
+        elif os.name == 'nt':
+            os.system('cls')
+        else:
+            print("Clear command not supported on this platform.")
     elif Directory == 'systerm':
-        os.system('python clear.py')
+        if os.name == 'posix':
+            if 'TERM' in os.environ and os.environ['TERM'] == 'xterm-256color':
+                os.system('clear')
+            else:
+                os.system('clear')
+        elif os.name == 'nt':
+            os.system('cls')
+        else:
+            print("Clear command not supported on this platform.")
     else:
         print("Error: please check your directory")
-    exit()
 
 
 if __name__ == '__main__':
