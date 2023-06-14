@@ -114,12 +114,12 @@ def openWeb(args, opera):
 
 def code(paths):
     if paths and 'vscode' in paths.keys():
-        print("ok")
+        vsopened = False
         for p in psutil.process_iter():
-            print(p.name)
-            if p.name == 'Code':
-                pass
-        # Popen(paths['vscode'])
+            if p.name() == 'Code.exe':
+                vsopened = True
+        if not vsopened:
+            Popen(paths['vscode'], shell=True)
     if paths and 'spotify' in paths.keys():
         # Popen(paths['spotify'])
         pass
