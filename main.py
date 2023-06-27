@@ -1,4 +1,6 @@
 import os
+import music
+import spotipy
 import psutil
 import requests
 import wikipedia
@@ -63,6 +65,16 @@ def backend(args, paths, opera):
             os._exit(0)
         elif args[0] == 'code' or args[0].lower() == 'c':
             code(paths, opera)
+        elif args[0] == 'play' or args[0].lower() == 'mp':
+            play(paths)
+        elif args[0] == 'pause' or args[0].lower() == 'mpu':
+            pause()
+        elif args[0] == 'resume' or args[0].lower() == 'mr' or args[0].lower() == 'res':
+            resume()
+        elif args[0] == 'previous' or args[0].lower() == 'mpr' or args[0].lower() == 'pre' or args[0].lower() == '<':
+            previous()
+        elif args[0] == 'next' or args[0].lower() == 'mn' or args[0].lower() == '>':
+            Next()
         else:
             print("Invalid command.\n")
     else:
@@ -126,8 +138,6 @@ def code(paths, opera):
             Popen(paths['vscode'], shell=True, stdout=DEVNULL, stderr=DEVNULL)
     opera.open_new_tab('https://github.com/OniChan-Baka')
     opera.open_new_tab('https://chat.openai.com/')
-    
-
 
 def restart():
     print("Restarting...\n")
@@ -171,6 +181,34 @@ def clear():
             print("Clear command not supported on this platform.")
     else:
         print("Error: please check your directory")
+def play(paths):
+    if paths and 'spotify' in paths.keys():
+        sopened = False
+        for p in psutil.process_iter():
+            if p.name() == 'Spotify.exe':
+                sopened = True
+        if not sopened:
+            Popen(paths['spotify'], shell=True)
+            openedyet = False
+            while not openedyet:
+                for p in psutil.process_iter():
+                    if p.name() == 'Spotify.exe':
+                        openedyet = True
+            music.play()
+        elif sopened:
+            music.play()
+
+def pause():
+    music.pause()
+
+def resume():
+    music.resume()
+
+def previous():
+    music.previous()
+
+def Next():
+    music.Next()
 
 
 if __name__ == '__main__':
