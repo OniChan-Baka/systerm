@@ -87,7 +87,8 @@ def wiki(args):
 
 def openApp(args, paths):
     args = " ".join(args)
-    print(f"Opening {args}\n")
+    pargs = args[0].upper() + args[1:]
+    print(f"Opening {pargs}\n")
     if len(args) > 0:
         match = matchkey(args, paths)
         if match:
