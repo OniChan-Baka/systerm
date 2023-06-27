@@ -1,13 +1,11 @@
 import os
+import psutil
 import requests
 import wikipedia
 import webbrowser
-import psutil
 from json import load
-os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = 'i'
-from pygame import mixer
-from subprocess import Popen
 from datetime import timedelta
+from subprocess import Popen, DEVNULL
 from fuzzywuzzy.process import extractOne
 
 
@@ -30,7 +28,7 @@ def main():
 
 def backend(args, paths, opera):
     if args:
-        if None:
+        if args == '':
             pass
         elif args[0].lower() == 'wiki' or args[0].lower() == 'wikipedia' or args[0].lower() == 'w':
             args.pop(0)
@@ -62,11 +60,9 @@ def backend(args, paths, opera):
             clear()
         elif args[0] == 'exit' or args[0].lower() == 'e':
             print("Exiting...")
-            mixer.quit()
-            exit()
+            os._exit(0)
         elif args[0] == 'code' or args[0].lower() == 'c':
-            code(paths)
-
+            code(paths, opera)
         else:
             print("Invalid command.\n")
     else:
@@ -112,17 +108,24 @@ def openWeb(args, opera):
     else:
         print("No arguments received.\n")
 
-def code(paths):
+def code(paths, opera):
+    if paths and 'spotify' in paths.keys():
+        spotifyopen = False
+        for p in psutil.process_iter():
+            if p.name() == 'Spotify.exe':
+                spotifyopen = True
+        if not spotifyopen:
+            Popen(paths['spotify'], shell=True)
     if paths and 'vscode' in paths.keys():
         vsopened = False
         for p in psutil.process_iter():
             if p.name() == 'Code.exe':
                 vsopened = True
         if not vsopened:
-            Popen(paths['vscode'], shell=True)
-    if paths and 'spotify' in paths.keys():
-        # Popen(paths['spotify'])
-        pass
+            Popen(paths['vscode'], shell=True, stdout=DEVNULL, stderr=DEVNULL)
+    opera.open_new_tab('https://github.com/OniChan-Baka')
+    opera.open_new_tab('https://chat.openai.com/')
+    
 
 
 def restart():
@@ -131,12 +134,12 @@ def restart():
     Directory = Directory.split('\\')
     Directory = Directory[-1]
     if Directory != 'systerm':
-        mixer.quit()
         os.chdir('systerm')
         os.system("python ./restart.py")
+        os._exit(0)
     elif Directory == 'systerm':
-        mixer.quit()
         os.system("python ./restart.py")
+        os._exit(0)
     else:
         print("Error: please check your directory")
 
