@@ -1,6 +1,5 @@
 import os
 import music
-import spotipy
 import psutil
 import requests
 import wikipedia
@@ -17,6 +16,7 @@ def main():
     Directory = Directory[-1]
     if Directory != 'systerm':
         os.chdir('systerm')
+    summeryLenght = 2
     opera_path = r"C:\\Users\\famal\\AppData\\Local\\Programs\\Opera GX\\opera.exe"
     webbrowser.register('opera', None, webbrowser.BackgroundBrowser(opera_path))
     opera = webbrowser.get('opera')
@@ -26,15 +26,15 @@ def main():
         args = input('> ')
         print(' ')
         args = args.split(' ')
-        backend(args, appsPaths, opera)
+        backend(args, appsPaths, opera, summeryLenght)
 
-def backend(args, paths, opera):
+def backend(args, paths, opera, summeryLenght):
     if args:
         if args == '':
             pass
         elif args[0].lower() == 'wiki' or args[0].lower() == 'wikipedia' or args[0].lower() == 'w':
             args.pop(0)
-            wiki(args)
+            wiki(args, summeryLenght)
         elif args[0].lower() == 'open' or args[0].lower() == 'o':
             args.pop(0)
             openApp(args, paths)
@@ -80,13 +80,13 @@ def backend(args, paths, opera):
     else:
         print("No arguments received.\n")
 
-def wiki(args):
+def wiki(args, summeryLenght):
     args = " ".join(args)
     wikipedia.set_lang('en')
     wikipedia.set_rate_limiting(True, min_wait=timedelta(milliseconds=1000))
     print("Getting Info...")
     try:
-        print(wikipedia.summary(args, sentences=2, auto_suggest=False), "\n")
+        print(wikipedia.summary(args, sentences=summeryLenght, auto_suggest=False), "\n")
     except wikipedia.DisambiguationError as e:
         print(f"There are multiple results for \"{args}\", Here are some suggestions:")
         ops = '\n'.join(e.options[0::5])
@@ -95,7 +95,6 @@ def wiki(args):
         print("Invalid input, no page found matching the query. please check your spellings and try again.\n")
     except requests.exceptions.ConnectionError as e:
         print("No internet connection.\n")
-
 
 def openApp(args, paths):
     args = " ".join(args)
