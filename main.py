@@ -1,16 +1,18 @@
 import os
+import time
 import music
 import psutil
 import requests
 import wikipedia
 import webbrowser
-from json import load
 from datetime import timedelta
+from json import load, dumps, loads
 from subprocess import Popen, DEVNULL
 from fuzzywuzzy.process import extractOne
 
 
 def main():
+    CommandHistory = []
     Directory = os.getcwd()
     Directory = Directory.split('\\')
     Directory = Directory[-1]
@@ -22,13 +24,18 @@ def main():
     opera = webbrowser.get('opera')
     with open(r"C:\\Data\\Programming\\Python\\sysTerm\\appPaths.json", "r") as f:
         appsPaths = load(f)
+    with open(r"C:\Data\Programming\Python\\sysTerm\\Logs.json", "r") as L:
+        Logs = load(L)
+    newLogs = {}
     while True:
-        args = input('> ')
+        argsStr = input('> ')
+        CommandHistory.append(argsStr)
+        LogW(Logs, newLogs, CommandHistory)
         print(' ')
-        args = args.split(' ')
-        backend(args, appsPaths, opera, summeryLenght)
+        args = argsStr.split(' ')
+        backend(args, appsPaths, opera, summeryLenght, Logs, CommandHistory)
 
-def backend(args, paths, opera, summeryLenght):
+def backend(args, paths, opera, summeryLenght, Logs, CommandHistory):
     if args:
         if args == '':
             pass
@@ -75,6 +82,8 @@ def backend(args, paths, opera, summeryLenght):
             previous()
         elif args[0] == 'next' or args[0].lower() == 'mn' or args[0].lower() == '>':
             Next()
+        elif args[0] == 'logs' or args[0].lower() == 'l':
+            Log(args[1:])
         else:
             print("Invalid command.\n")
     else:
@@ -209,6 +218,25 @@ def previous():
 def Next():
     music.Next()
 
+def LogW(Logs, newLogs, CommandHistory):
+    oldLogs = dict(Logs)
+    newLogs[str(time.ctime())] = CommandHistory[-1]
+    oldLogs.update(newLogs)
+    with open(r"C:\Data\Programming\Python\\sysTerm\\Logs.json", "w") as L:
+        L.write(dumps(oldLogs, indent=4))
+
+def Log(args):
+    if len(args) > 0:
+        if args[0] == 'show':
+            with open(r"C:\Data\Programming\Python\\sysTerm\\Logs.json", "r") as R:
+                logsR = loads(R.read())
+                history = list(logsR.values())[-10:]
+                n = 0
+                for i in history:
+                    n += 1
+                    print(f"{n}: {i}")
+
+    
 
 if __name__ == '__main__':
     main()
