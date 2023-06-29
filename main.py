@@ -27,16 +27,18 @@ def main():
     with open(r"C:\Data\Programming\Python\\sysTerm\\Logs.json", "r") as L:
         Logs = load(L)
     newLogs = {}
+    api_key = '7e70399b4d87cba79fe79588f9cda88a'
+    city_name = 'faisalabad'
     while True:
         argsStr = input('> ')
         CommandHistory.append(argsStr)
         LogW(Logs, newLogs, CommandHistory)
         print(' ')
         args = argsStr.split(' ')
-        backend(args, appsPaths, opera, summeryLenght, Logs, CommandHistory)
+        backend(args, appsPaths, opera, summeryLenght, Logs, CommandHistory, city_name, api_key)
 
-def backend(args, paths, opera, summeryLenght, Logs, CommandHistory):
-    if args:
+def backend(args, paths, opera, summeryLenght, Logs, CommandHistory, city_name, api_key):
+    if args[0] != '':
         if args == '':
             pass
         elif args[0].lower() == 'wiki' or args[0].lower() == 'wikipedia' or args[0].lower() == 'w':
@@ -50,7 +52,7 @@ def backend(args, paths, opera, summeryLenght, Logs, CommandHistory):
             openWeb('https://www.youtube.com', opera)
         elif args[0].lower() == 'github' or args[0].lower() == 'g':
             args.pop(0)
-            openWeb('https://github.com', opera)
+            openWeb('https://github.com/OniChan-Baka/', opera)
         elif args[0].lower() == 'chatgpt' or args[0].lower() == 'chat' or args[0].lower() == 'c':
             args.pop(0)
             openWeb('https://chat.openai.com/?model=text-davinci-002-render-sha', opera)
@@ -84,6 +86,8 @@ def backend(args, paths, opera, summeryLenght, Logs, CommandHistory):
             Next()
         elif args[0] == 'logs' or args[0].lower() == 'l':
             Log(args[1:])
+        elif args[0] == 'weather':
+            getWeather(city_name, api_key)
         else:
             print("Invalid command.\n")
     else:
@@ -235,6 +239,16 @@ def Log(args):
                 for i in history:
                     n += 1
                     print(f"{n}: {i}")
+
+def getWeather(city_name, api_key):
+    url = f'http://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={api_key}'
+    weather_response = requests.get(url)
+    if weather_response.status_code == 200:
+        weather_data = weather_response.json()
+        temp = int(weather_data['main']['temp'])-270
+        print(f'Temperature in {city_name} is: {temp}°C\n')
+    else:
+        print('Failed to fetch weather data. Status code:', weather_response.status_code)
 
     
 
