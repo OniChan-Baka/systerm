@@ -85,9 +85,11 @@ def backend(args, paths, opera, summeryLenght, Logs, CommandHistory, city_name, 
             Log(args[1:])
         elif args[0] == 'weather' or args[0].lower == 'temperature' or args[0].lower() == 'temp':
             getWeather(city_name, api_key)
-        elif args[0] == 'commit': #TODO remove this after development
+        elif args[0] == 'commitloop': #TODO remove this after development
             for i in range(10):
-                commit(i)
+                commitloop(i)
+        elif args[0] == 'commit': #TODO remove this after development
+            commit()
         elif args[0] == 'mode':
             mode(args[1:], paths, opera)
         else:
@@ -271,7 +273,19 @@ def mode(args, paths, opera):
     else:
         print("No arguments provided!")
 
-def commit(i):
+def commit():
+    try:
+        os.system("cd Python")
+    except:
+        pass
+    try:
+        os.system("cd systerm")
+    except:
+        pass
+    os.system("git add .")
+    os.system("git commit -m \"This is a automated commit\"")
+    os.system("git push")
+def commitloop(i):
     with open("C:\\Data\\Programming\\Python\\systerm\\requirments.txt", "w") as f:
         f.write(f"""wikipedia
 fuzzywuzzy
