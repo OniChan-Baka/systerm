@@ -271,8 +271,13 @@ def mode(args, paths, opera):
     else:
         print("No arguments provided!")
 
-def commit():
-    msg = "automated commit message"
+def commit(i):
+    with open("C:\\Data\\Programming\\Python\\systerm\\requirments.txt", "w") as f:
+        f.write(f"""wikipedia
+fuzzywuzzy
+requests
+pygame
+json{i}""")
     try:
         os.system("cd Python")
     except:
