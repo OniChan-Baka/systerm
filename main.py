@@ -33,7 +33,6 @@ def main():
         argsStr = input('> ')
         CommandHistory.append(argsStr)
         LogW(Logs, newLogs, CommandHistory)
-        print(' ')
         args = argsStr.split(' ')
         backend(args, appsPaths, opera, summeryLenght, Logs, CommandHistory, city_name, api_key)
 
@@ -86,12 +85,12 @@ def backend(args, paths, opera, summeryLenght, Logs, CommandHistory, city_name, 
             Next()
         elif args[0] == 'logs' or args[0].lower() == 'l':
             Log(args[1:])
-        elif args[0] == 'weather':
+        elif args[0] == 'weather' or args[0].lower == 'temperature' or args[0].lower() == 'temp':
             getWeather(city_name, api_key)
         else:
-            print("Invalid command.\n")
+            print("Invalid command.")
     else:
-        print("No arguments received.\n")
+        print("No arguments received.")
 
 def wiki(args, summeryLenght):
     args = " ".join(args)
@@ -99,26 +98,26 @@ def wiki(args, summeryLenght):
     wikipedia.set_rate_limiting(True, min_wait=timedelta(milliseconds=1000))
     print("Getting Info...")
     try:
-        print(wikipedia.summary(args, sentences=summeryLenght, auto_suggest=False), "\n")
+        print(wikipedia.summary(args, sentences=summeryLenght, auto_suggest=False), "")
     except wikipedia.DisambiguationError as e:
         print(f"There are multiple results for \"{args}\", Here are some suggestions:")
-        ops = '\n'.join(e.options[0::5])
+        ops = ''.join(e.options[0::5])
         print(ops)
     except wikipedia.exceptions.PageError as e:
-        print("Invalid input, no page found matching the query. please check your spellings and try again.\n")
+        print("Invalid input, no page found matching the query. please check your spellings and try again.")
     except requests.exceptions.ConnectionError as e:
-        print("No internet connection.\n")
+        print("No internet connection.")
 
 def openApp(args, paths):
     args = " ".join(args)
     pargs = args[0].upper() + args[1:]
-    print(f"Opening {pargs}\n")
+    print(f"Opening {pargs}")
     if len(args) > 0:
         match = matchkey(args, paths)
         if match:
             Popen(paths[match], shell=True)
         else:
-            print(f"No app found for {args}\n")
+            print(f"No app found for {args}")
 
 def matchkey(args, paths):
     appList = paths.keys()
@@ -127,11 +126,11 @@ def matchkey(args, paths):
         return match
 
 def openWeb(args, opera):
-    print("Opening web page...\n")
+    print("Opening web page...")
     if args:
         opera.open_new_tab(args)
     else:
-        print("No arguments received.\n")
+        print("No arguments received.")
 
 def code(paths, opera):
     if paths and 'spotify' in paths.keys():
@@ -152,7 +151,7 @@ def code(paths, opera):
     opera.open_new_tab('https://chat.openai.com/')
 
 def restart():
-    print("Restarting...\n")
+    print("Restarting...")
     Directory = os.getcwd()
     Directory = Directory.split('\\')
     Directory = Directory[-1]
@@ -239,14 +238,17 @@ def Log(args):
                 for i in history:
                     n += 1
                     print(f"{n}: {i}")
-
+        else:
+            print("wrong argument provided!")
+    else:
+        print('No arguments specified!')
 def getWeather(city_name, api_key):
     url = f'http://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={api_key}'
     weather_response = requests.get(url)
     if weather_response.status_code == 200:
         weather_data = weather_response.json()
-        temp = int(weather_data['main']['temp'])-270
-        print(f'Temperature in {city_name} is: {temp}°C\n')
+        temp = int(weather_data['main']['temp']-273.15)
+        print(f'Temperature in {city_name} is: {temp}°C')
     else:
         print('Failed to fetch weather data. Status code:', weather_response.status_code)
 
