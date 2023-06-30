@@ -272,11 +272,14 @@ def mode(args, paths, opera):
 
 def commit():
     msg = "automated commit message"
-    os.system("cd ..")
+    try:
+        os.system("cd Python")
+    except:
+        pass
     try:
         os.system("cd systerm")
     except:
-        print("an error occurred while committing")
+        pass
     os.system("git add .")
     os.system("git commit -m \"automated commit message\"")
     os.system("git push")
