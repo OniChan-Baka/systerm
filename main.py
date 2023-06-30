@@ -281,7 +281,7 @@ def commit():
     except:
         pass
     os.system("git add .")
-    os.system("git commit -m \"automated commit message\"")
+    os.system("git commit -m \"This is a automated commit\"")
     os.system("git push")
 
 
