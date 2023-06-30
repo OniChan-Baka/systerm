@@ -87,7 +87,7 @@ def backend(args, paths, opera, summeryLenght, Logs, CommandHistory, city_name, 
             getWeather(city_name, api_key)
         elif args[0] == 'commit': #TODO remove this after development
             for i in range(10):
-                commit()
+                commit(i)
         elif args[0] == 'mode':
             mode(args[1:], paths, opera)
         else:
