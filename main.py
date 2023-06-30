@@ -275,14 +275,6 @@ def mode(args, paths, opera):
         print("No arguments provided!")
 
 def commit():
-    try:
-        os.system("cd Python")
-    except:
-        pass
-    try:
-        os.system("cd systerm")
-    except:
-        pass
     os.system("git add .")
     os.system("git commit -m \"This is a automated commit\"")
     os.system("git push")
@@ -293,14 +285,6 @@ fuzzywuzzy
 requests
 pygame
 json{i}""")
-    try:
-        os.system("cd Python")
-    except:
-        pass
-    try:
-        os.system("cd systerm")
-    except:
-        pass
     os.system("git add .")
     os.system("git commit -m \"This is a automated commit\"")
     os.system("git push")
