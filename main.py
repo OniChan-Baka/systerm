@@ -27,7 +27,8 @@ def main():
     with open(r"C:\Data\Programming\Python\\sysTerm\\Logs.json", "r") as L:
         Logs = load(L)
     newLogs = {}
-    api_key = '7e70399b4d87cba79fe79588f9cda88a'
+    with open(r"C:\Data\Programming\Python\systerm\api_key.json", 'r') as key:
+        api_key = load(key)['api']
     city_name = 'faisalabad'
     while True:
         argsStr = input('> ')

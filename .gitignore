@@ -1,3 +1,4 @@
-.cache
 __pycache__/
 Songs/
+.cache
+api_key.json
