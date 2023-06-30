@@ -272,7 +272,7 @@ def mode(args, paths, opera):
 
 def commit():
     msg = "automated commit message"
-    os.system("cd ../")
+    os.system("cd ..")
     try:
         os.system("cd systerm")
     except:
