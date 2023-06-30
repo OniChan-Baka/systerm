@@ -26,4 +26,11 @@ def Next():
     sp.next_track()
 def previous():
     sp.previous_track()
-
+def playcustom(playlist_url):
+    playlist_id = playlist_url.split('/')[-1]
+    playlist = sp.playlist(playlist_id, fields="tracks.items.track.id,total")
+    tracks = playlist['tracks']['items']
+    track_ids = [track['track']['id'] for track in tracks]
+    songList = [f"spotify:track:{track_id}" for track_id in track_ids]
+    shuffle(songList)
+    sp.start_playback(uris=songList)

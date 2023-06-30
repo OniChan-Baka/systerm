@@ -71,8 +71,6 @@ def backend(args, paths, opera, summeryLenght, Logs, CommandHistory, city_name, 
         elif args[0] == 'exit' or args[0].lower() == 'e':
             print("Exiting...")
             os._exit(0)
-        elif args[0] == 'code' or args[0].lower() == 'c':
-            code(paths, opera)
         elif args[0] == 'play' or args[0].lower() == 'mp':
             play(paths)
         elif args[0] == 'pause' or args[0].lower() == 'mpu':
@@ -87,6 +85,10 @@ def backend(args, paths, opera, summeryLenght, Logs, CommandHistory, city_name, 
             Log(args[1:])
         elif args[0] == 'weather' or args[0].lower == 'temperature' or args[0].lower() == 'temp':
             getWeather(city_name, api_key)
+        elif args[0] == 'commit': #TODO remove this after development
+            commit()
+        elif args[0] == 'mode':
+            mode(args[1:], paths, opera)
         else:
             print("Invalid command.")
     else:
@@ -252,7 +254,32 @@ def getWeather(city_name, api_key):
     else:
         print('Failed to fetch weather data. Status code:', weather_response.status_code)
 
-    
+def study():
+    print("study")
+    music.playcustom("https://open.spotify.com/playlist/0rlvZxefuTfi14ydHLgIxT")
+
+def mode(args, paths, opera):
+    print(args)
+    if len(args) == 1:
+        if args[0] == "code":
+            code(paths, opera)
+        if args[0] == "study":
+            study()
+    elif len(args) > 1:
+        print("Too many arguments!")
+    else:
+        print("No arguments provided!")
+
+def commit():
+    msg = "automated commit message"
+    try:
+        os.system("cd systerm")
+    except:
+        print("an error occurred while committing")
+    os.system("git add .")
+    os.system("git commit -m automated commit message")
+    os.system("git push")
+
 
 if __name__ == '__main__':
     main()
