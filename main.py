@@ -277,7 +277,7 @@ def commit():
     except:
         print("an error occurred while committing")
     os.system("git add .")
-    os.system("git commit -m automated commit message")
+    os.system("git commit -m \"automated commit message\"")
     os.system("git push")
 
 
