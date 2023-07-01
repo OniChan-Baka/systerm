@@ -5,6 +5,7 @@ import psutil
 import requests
 import wikipedia
 import webbrowser
+from time import sleep
 from datetime import timedelta
 from json import load, dumps, loads
 from subprocess import Popen, DEVNULL
@@ -27,7 +28,7 @@ def main():
     with open(r"C:\Data\Programming\Python\\sysTerm\\Logs.json", "r") as L:
         Logs = load(L)
     newLogs = {}
-    with open(r"C:\Data\Programming\Python\systerm\api_key.json", 'r') as key:
+    with open(r"C:\\Data\\Programming\\Python\\systerm\\api_key.json", 'r') as key:
         api_key = load(key)['api']
     city_name = 'faisalabad'
     while True:
@@ -85,7 +86,7 @@ def backend(args, paths, opera, summeryLenght, Logs, CommandHistory, city_name, 
         elif args[0] == 'logs' or args[0].lower() == 'l':
             Log(args[1:])
         elif args[0] == 'weather' or args[0].lower == 'temperature' or args[0].lower() == 'temp':
-            getWeather(city_name, api_key)
+            getWeather(city_name, api_key, args[1:])
         elif args[0] == 'commitloop': #TODO remove this after development
             for i in range(10):
                 commitloop(i)
@@ -212,19 +213,24 @@ def play(paths):
                     if p.name() == 'Spotify.exe':
                         openedyet = True
             music.play()
+            
         elif sopened:
             music.play()
 
 def pause():
+    print("Paused")
     music.pause()
 
 def resume():
+    print("Resumed")
     music.resume()
 
 def previous():
+    print("Previous")
     music.previous()
 
 def Next():
+    print("Next")
     music.Next()
 
 def LogW(Logs, newLogs, CommandHistory):
@@ -248,15 +254,26 @@ def Log(args):
             print("wrong argument provided!")
     else:
         print('No arguments specified!')
-def getWeather(city_name, api_key):
-    url = f'http://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={api_key}'
-    weather_response = requests.get(url)
-    if weather_response.status_code == 200:
-        weather_data = weather_response.json()
-        temp = int(weather_data['main']['temp']-273.15)
-        print(f'Temperature in {city_name} is: {temp}°C')
+def getWeather(city_name, api_key, args):
+    if len(args) > 0:
+        print(args[0])
+        url = f'http://api.openweathermap.org/data/2.5/weather?q={args[0]}&appid={api_key}'
+        weather_response = requests.get(url)
+        if weather_response.status_code == 200:
+            weather_data = weather_response.json()
+            temp = int(weather_data['main']['temp']-273.15)
+            print(f'Temperature in {city_name} is: {temp}°C')
+        else:
+            print('Failed to fetch weather data. Status code:', weather_response.status_code)
     else:
-        print('Failed to fetch weather data. Status code:', weather_response.status_code)
+        url = f'http://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={api_key}'
+        weather_response = requests.get(url)
+        if weather_response.status_code == 200:
+            weather_data = weather_response.json()
+            temp = int(weather_data['main']['temp']-273.15)
+            print(f'Temperature in {city_name} is: {temp}°C')
+        else:
+            print('Failed to fetch weather data. Status code:', weather_response.status_code)
 
 def study():
     print("study")
