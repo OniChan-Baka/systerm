@@ -1,10 +1,12 @@
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from random import shuffle
-
+from json import load
+with open("systerm\\api_key.json", "r") as f:
+    file = load(f)
+    client_secret = file["client_secret"]
+    client_id = file["client_id"]
 try:
-    client_id = "d1083a0d79974a4ea073b892268ee9c8"
-    client_secret = "70fbc8c74bc44a2cb9ef621a29a12e2f"
     redirect_uri = "http://localhost:8080"
     scope = "user-modify-playback-state"
     sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=client_id, client_secret=client_secret, redirect_uri=redirect_uri, scope=scope))

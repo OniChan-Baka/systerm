@@ -3,10 +3,12 @@ import time
 import music
 import psutil
 import requests
+import comtypes
 import wikipedia
 import webbrowser
 from time import sleep
 from datetime import timedelta
+from pycaw.utils import AudioUtilities
 from json import load, dumps, loads
 from subprocess import Popen, DEVNULL
 from fuzzywuzzy.process import extractOne
@@ -87,6 +89,8 @@ def backend(args, paths, opera, summeryLenght, Logs, CommandHistory, city_name, 
             Log(args[1:])
         elif args[0] == 'weather' or args[0].lower == 'temperature' or args[0].lower() == 'temp':
             getWeather(city_name, api_key, args[1:])
+        elif args[0] == 'volume' or args[0].lower() == 'v':
+            volume(args[1:])
         elif args[0] == 'commitloop': #TODO remove this after development
             for i in range(10):
                 commitloop(i)
@@ -305,6 +309,29 @@ json{i}""")
     os.system("git add .")
     os.system("git commit -m \"This is a automated commit\"")
     os.system("git push")
+
+def set_system_volume(volume_level):
+    devices = AudioUtilities.GetSpeakers()
+    interface = devices.Activate(
+        AudioUtilities.IAudioEndpointVolume._iid_, 
+        comtypes.CLSCTX_ALL, 
+        None
+    )
+    volume = interface.QueryInterface(AudioUtilities.IAudioEndpointVolume)
+    volume.SetMasterVolumeLevelScalar(volume_level, None)
+
+def volume(args):
+    if len(args) == 1:
+        if isinstance(args[0], int):
+            set_system_volume(args[0])
+        elif args[0] == 'up' or "u":
+            pass
+        elif args[0] == 'down' or "d":
+            pass
+    elif len(args) > 1:
+        print("Too many arguments!")
+    elif len(args) < 1:
+        print("no arguments provided!")
 
 
 if __name__ == '__main__':
