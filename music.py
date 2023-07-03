@@ -2,7 +2,7 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from random import shuffle
 from json import load
-with open("systerm\\api_key.json", "r") as f:
+with open("api_key.json", "r") as f:
     file = load(f)
     client_secret = file["client_secret"]
     client_id = file["client_id"]

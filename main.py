@@ -2,15 +2,15 @@ import os
 import time
 import music
 import psutil
-import requests
 import comtypes
+import requests
 import wikipedia
 import webbrowser
 from time import sleep
 from datetime import timedelta
-from pycaw.utils import AudioUtilities
 from json import load, dumps, loads
 from subprocess import Popen, DEVNULL
+from pycaw.utils import AudioUtilities
 from fuzzywuzzy.process import extractOne
 
 
@@ -91,13 +91,13 @@ def backend(args, paths, opera, summeryLenght, Logs, CommandHistory, city_name, 
             getWeather(city_name, api_key, args[1:])
         elif args[0] == 'volume' or args[0].lower() == 'v':
             volume(args[1:])
+        elif args[0] == 'mode':
+            mode(args[1:], paths, opera)
         elif args[0] == 'commitloop': #TODO remove this after development
             for i in range(10):
                 commitloop(i)
         elif args[0] == 'commit': #TODO remove this after development
             commit()
-        elif args[0] == 'mode':
-            mode(args[1:], paths, opera)
         else:
             print("Invalid command.")
     else:
@@ -260,7 +260,6 @@ def Log(args):
         print('No arguments specified!')
 def getWeather(city_name, api_key, args):
     if len(args) > 0:
-        print(args[0])
         url = f'http://api.openweathermap.org/data/2.5/weather?q={args[0]}&appid={api_key}'
         weather_response = requests.get(url)
         if weather_response.status_code == 200:
@@ -284,7 +283,6 @@ def study():
     music.playcustom("https://open.spotify.com/playlist/0rlvZxefuTfi14ydHLgIxT")
 
 def mode(args, paths, opera):
-    print(args)
     if len(args) == 1:
         if args[0] == "code":
             code(paths, opera)
@@ -336,3 +334,4 @@ def volume(args):
 
 if __name__ == '__main__':
     main()
+    input("press enter to exit...")
