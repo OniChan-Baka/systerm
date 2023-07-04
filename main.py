@@ -101,8 +101,8 @@ def backend(args, paths, opera, summeryLenght, Logs, CommandHistory, city_name, 
         else:
             print("Invalid command.")
     else:
-        print("No arguments received.")
-
+        pass
+    
 def wiki(args, summeryLenght):
     args = " ".join(args)
     wikipedia.set_lang('en')
@@ -334,4 +334,3 @@ def volume(args):
 
 if __name__ == '__main__':
     main()
-    input("press enter to exit...")
