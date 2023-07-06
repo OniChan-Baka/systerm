@@ -2,16 +2,13 @@ import os
 import time
 import music
 import psutil
-import volume as vol
-import comtypes
 import requests
 import wikipedia
 import webbrowser
-from time import sleep
+import volume as vol
 from datetime import timedelta
 from json import load, dumps, loads
 from subprocess import Popen, DEVNULL
-from pycaw.utils import AudioUtilities
 from fuzzywuzzy.process import extractOne
 
 
@@ -39,9 +36,9 @@ def main():
         CommandHistory.append(argsStr)
         LogW(Logs, newLogs, CommandHistory)
         args = argsStr.split(' ')
-        backend(args, appsPaths, opera, summeryLenght, Logs, CommandHistory, city_name, api_key)
+        backend(args, appsPaths, opera, summeryLenght, city_name, api_key)
 
-def backend(args, paths, opera, summeryLenght, Logs, CommandHistory, city_name, api_key):
+def backend(args, paths, opera, summeryLenght, city_name, api_key):
     if args[0] != '':
         if args == '':
             pass
