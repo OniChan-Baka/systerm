@@ -2,6 +2,7 @@ import os
 import time
 import music
 import psutil
+import volume as vol
 import comtypes
 import requests
 import wikipedia
@@ -308,24 +309,39 @@ json{i}""")
     os.system("git commit -m \"This is a automated commit\"")
     os.system("git push")
 
-def set_system_volume(volume_level):
-    devices = AudioUtilities.GetSpeakers()
-    interface = devices.Activate(
-        AudioUtilities.IAudioEndpointVolume._iid_, 
-        comtypes.CLSCTX_ALL, 
-        None
-    )
-    volume = interface.QueryInterface(AudioUtilities.IAudioEndpointVolume)
-    volume.SetMasterVolumeLevelScalar(volume_level, None)
+def convert_value(n):
+    converted_value = ((n - 0) / (100 - 0)) * (0 - (-65)) - 65
+    return converted_value
 
-def volume(args):
+def set_system_volume(volume_level):
+    if volume_level <= 100 and volume_level >= 0 and isinstance(volume_level, int):
+        vol.set_volume(convert_value(volume_level))
+    else:
+        print("wrong volume level!")
+
+def volume(args: list):
+    try:
+        args[0] = int(args[0])
+    except:
+        pass
     if len(args) == 1:
         if isinstance(args[0], int):
             set_system_volume(args[0])
-        elif args[0] == 'up' or "u":
-            pass
-        elif args[0] == 'down' or "d":
-            pass
+        elif isinstance(args[0], str):
+            if args[0].lower() == 'max' or args[0].lower() == 'm':
+                vol.set_volume(0)
+            elif args[0].lower() == 'min':
+                vol.set_volume(-65)
+            elif args[0].lower() == 'mute':
+                vol.mute()
+            elif args[0].lower() == 'unmute':
+                vol.unmute()
+            elif args[0].lower() == 'current' or args[0].lower() == 'c':
+                vol.current_volume()
+            else:
+                print("wrong argument provided!")
+        else:
+            print("wrong argument provided!")
     elif len(args) > 1:
         print("Too many arguments!")
     elif len(args) < 1:
