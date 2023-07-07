@@ -6,6 +6,7 @@ import requests
 import wikipedia
 import webbrowser
 import volume as vol
+from bardapi import Bard
 from datetime import timedelta
 from json import load, dumps, loads
 from subprocess import Popen, DEVNULL
@@ -29,8 +30,11 @@ def main():
         Logs = load(L)
     newLogs = {}
     with open(r"C:\\Data\\Programming\\Python\\systerm\\api_key.json", 'r') as key:
-        api_key = load(key)['api']
+        api = load(key)
+    api_key = api["api"]
+    os.environ['_BARD_API_KEY']=api["bard-session"]
     city_name = 'faisalabad'
+    
     while True:
         argsStr = input('> ')
         CommandHistory.append(argsStr)
@@ -91,6 +95,8 @@ def backend(args, paths, opera, summeryLenght, city_name, api_key):
             volume(args[1:])
         elif args[0] == 'mode':
             mode(args[1:], paths, opera)
+        elif args[0] == 'bard' or args[0].lower() == 'b':
+            bardChat(args[1:])
         elif args[0] == 'commitloop': #TODO remove this after development
             for i in range(10):
                 commitloop(i)
@@ -339,6 +345,15 @@ def volume(args: list):
         print("Too many arguments!")
     elif len(args) < 1:
         print("no arguments provided!")
+
+def bardChat(args):
+    if args and len(args) > 0:
+        try:
+            args = ' '.join(args)
+        except:
+            pass
+        if isinstance(args, str):
+            print(Bard().get_answer(args)['content'])
 
 
 if __name__ == '__main__':
