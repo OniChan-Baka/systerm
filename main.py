@@ -326,9 +326,9 @@ def volume(args: list):
             set_system_volume(args[0])
         elif isinstance(args[0], str):
             if args[0].lower() == 'max' or args[0].lower() == 'm':
-                vol.set_volume(0)
+                vol.set_volume(convert_value(100))
             elif args[0].lower() == 'min':
-                vol.set_volume(-65)
+                vol.set_volume(convert_value(0))
             elif args[0].lower() == 'mute':
                 vol.mute()
             elif args[0].lower() == 'unmute':
