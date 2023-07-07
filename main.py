@@ -87,6 +87,8 @@ def backend(args, paths, opera, summeryLenght, city_name, api_key):
             previous()
         elif args[0] == 'next' or args[0].lower() == 'mn' or args[0].lower() == '>':
             Next()
+        elif args[0] == 'musicshow' or args[0].lower() == 'ms':
+            music.currentSong()
         elif args[0] == 'logs' or args[0].lower() == 'l':
             Log(args[1:])
         elif args[0] == 'weather' or args[0].lower == 'temperature' or args[0].lower() == 'temp':
@@ -278,16 +280,26 @@ def getWeather(city_name, api_key, args):
         else:
             print('Failed to fetch weather data. Status code:', weather_response.status_code)
 
-def study():
+def study(paths):
     print("study")
-    music.playcustom("https://open.spotify.com/playlist/0rlvZxefuTfi14ydHLgIxT")
+    if paths and 'spotify' in paths.keys():
+        spotifyopen = False
+        for p in psutil.process_iter():
+            if p.name() == 'Spotify.exe':
+                spotifyopen = True
+        if not spotifyopen:
+            Popen(paths['spotify'], shell=True)
+    try:
+        music.playcustom("https://open.spotify.com/playlist/0rlvZxefuTfi14ydHLgIxT", True)
+    except:
+        pass
 
 def mode(args, paths, opera):
     if len(args) == 1:
         if args[0] == "code":
             code(paths, opera)
         if args[0] == "study":
-            study()
+            study(paths)
     elif len(args) > 1:
         print("Too many arguments!")
     else:

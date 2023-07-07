@@ -8,7 +8,7 @@ with open("api_key.json", "r") as f:
     client_id = file["client_id"]
 try:
     redirect_uri = "http://localhost:8080"
-    scope = "user-modify-playback-state"
+    scope = "user-modify-playback-state user-read-playback-state"
     sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=client_id, client_secret=client_secret, redirect_uri=redirect_uri, scope=scope))
     playlist_url = "https://open.spotify.com/playlist/4PPFMow4DCYoIFTrOrBEB3"
     playlist_id = playlist_url.split('/')[-1]
@@ -40,3 +40,5 @@ def playcustom(playlist_url):
     songList = [f"spotify:track:{track_id}" for track_id in track_ids]
     shuffle(songList)
     sp.start_playback(uris=songList)
+def currentSong():
+    print("Currently playing:", sp.current_playback()['item']['name'])
