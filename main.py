@@ -220,19 +220,15 @@ def play(paths):
             music.play()
 
 def pause():
-    print("Paused")
     music.pause()
 
 def resume():
-    print("Resumed")
     music.resume()
 
 def previous():
-    print("Previous")
     music.previous()
 
 def Next():
-    print("Next")
     music.Next()
 
 def LogW(Logs, newLogs, CommandHistory):
