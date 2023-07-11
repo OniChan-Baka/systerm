@@ -2,4 +2,4 @@ wikipedia
 fuzzywuzzy
 requests
 pygame
-json3
+json4
