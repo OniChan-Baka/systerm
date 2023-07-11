@@ -99,6 +99,8 @@ def backend(args, paths, opera, summeryLenght, city_name, api_key):
             mode(args[1:], paths, opera)
         elif args[0] == 'bard' or args[0].lower() == 'b':
             bardChat(args[1:])
+        elif args[0] == 'system' or args[0].lower() == 'sys':
+            system(args[1:])
         elif args[0] == 'commitloop': #TODO remove this after development
             for i in range(10):
                 commitloop(i)
@@ -366,7 +368,9 @@ def bardChat(args):
             pass
         if isinstance(args, str):
             print(Bard().get_answer(args)['content'])
-
+def system(args):
+    args = ' '.join(args)
+    os.system(args)
 
 if __name__ == '__main__':
     main()
